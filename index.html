@@ -2,27 +2,191 @@
 <html>
 <head>
     <title>AI Money Mentor 💰</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom, #f0f4f8, #dff1fb);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 25px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 450px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 8px;
+            border-radius: 12px;
+            border: 1px solid #bdc3c7;
+            font-size: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 48%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.calculate {
+            background: #27ae60;
+            color: white;
+        }
+
+        button.calculate:hover {
+            background: #2ecc71;
+        }
+
+        button.logout {
+            background: #e74c3c;
+            color: white;
+        }
+
+        button.logout:hover {
+            background: #ff4d4d;
+        }
+
+        #result {
+            margin-top: 30px;
+            background: #ecf0f1;
+            padding: 25px;
+            border-radius: 20px;
+            color: #2c3e50;
+            line-height: 1.7;
+            font-size: 16px;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Optional progress bar for FIRE */
+        .progress-container {
+            background: #dcdde1;
+            border-radius: 12px;
+            height: 18px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        @media(max-width: 500px) {
+            .container {
+                width: 90%;
+                padding: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<h1>AI Money Mentor 💰</h1>
-<p>Your Personal Financial Guide</p>
+<div class="container">
+    <h1>AI Money Mentor 💰</h1>
+    <p class="subtitle">Your Personal Financial Roadmap</p>
 
-<div class="box">
-    <input type="number" id="income" placeholder="Monthly Income"><br><br>
-    <input type="number" id="expenses" placeholder="Monthly Expenses"><br><br>
+    <div class="input-group">
+        <label>Monthly Income 💵</label>
+        <input type="number" id="income" placeholder="Enter your monthly income">
+    </div>
 
-    <button onclick="calculate()">Calculate</button>
+    <div class="input-group">
+        <label>Monthly Expenses 💸</label>
+        <input type="number" id="expenses" placeholder="Enter your monthly expenses">
+    </div>
+
+    <div class="buttons">
+        <button class="calculate" onclick="calculate()">Calculate</button>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
 
     <div id="result"></div>
 </div>
 
-<script src="script.js"></script>
 <script>
-    // ✅ Check login status
-    if(localStorage.getItem("isLoggedIn") !== "true") {
+    // Force login
+    if(sessionStorage.getItem("isLoggedIn") !== "true") {
         alert("⚠ You must login first!");
+        window.location.href = "login.html";
+    }
+
+    function calculate() {
+        const income = Number(document.getElementById("income").value);
+        const expenses = Number(document.getElementById("expenses").value);
+
+        if(!income || !expenses) {
+            alert("⚠ Enter both income and expenses");
+            return;
+        }
+
+        const savings = income - expenses;
+        const sip = Math.round(income * 0.2);
+        const emergencyMin = expenses * 3;
+        const emergencyMax = expenses * 6;
+        const fireGoal = (expenses * 12) * 25;
+
+        // Calculate FIRE progress % (assuming savings accumulate monthly)
+        let fireProgress = Math.round((savings * 12 / fireGoal) * 100);
+        if(fireProgress > 100) fireProgress = 100;
+
+        document.getElementById("result").innerHTML = `
+            💵 <strong>Income:</strong> ₹${income} <br>
+            💸 <strong>Expenses:</strong> ₹${expenses} <br>
+            💰 <strong>Savings:</strong> ₹${savings} <br>
+            📈 <strong>Recommended SIP:</strong> ₹${sip} <br>
+            🚨 <strong>Emergency Fund Needed:</strong> ₹${emergencyMin} – ₹${emergencyMax} <br>
+            🔥 <strong>FIRE Goal:</strong> ₹${fireGoal} <br>
+            🔹 <strong>FIRE Progress:</strong> ${fireProgress}% 
+            <div class="progress-container">
+                <div class="progress-bar" style="width:${fireProgress}%"></div>
+            </div>
+        `;
+    }
+
+    function logout() {
+        sessionStorage.removeItem("isLoggedIn");
+        alert("✅ Logged out successfully!");
         window.location.href = "login.html";
     }
 </script>
