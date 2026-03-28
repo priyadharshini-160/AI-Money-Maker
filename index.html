@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Money Mentor 💰</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>AI Money Mentor 💰</h1>
+<p>Your Personal Financial Guide</p>
+
+<div class="box">
+    <input type="number" id="income" placeholder="Monthly Income"><br><br>
+    <input type="number" id="expenses" placeholder="Monthly Expenses"><br><br>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="result"></div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    // ✅ Check login status
+    if(localStorage.getItem("isLoggedIn") !== "true") {
+        alert("⚠ You must login first!");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

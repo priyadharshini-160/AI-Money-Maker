@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register 📝</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Create Account 📝</h1>
+
+<div class="container">
+    <input type="text" id="newUser" placeholder="Create Username"><br>
+    <input type="password" id="newPass" placeholder="Create Password"><br>
+
+    <button onclick="register()">Register ✅</button>
+
+    <p id="msg"></p>
+
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+</div>
+
+<script>
+function register() {
+    let user = document.getElementById("newUser").value.trim();
+    let pass = document.getElementById("newPass").value.trim();
+
+    if(user === "" || pass === "") {
+        document.getElementById("msg").innerHTML = "⚠ Fill all fields";
+        return;
+    }
+
+    // Save in localStorage (simple hackathon storage)
+    localStorage.setItem("username", user);
+    localStorage.setItem("password", pass);
+
+    document.getElementById("msg").innerHTML = "✅ Registered Successfully!";
+
+    // Redirect to login after 1.5s
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 1500);
+}
+</script>
+
+</body>
+</html>

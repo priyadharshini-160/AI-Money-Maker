@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login 💰</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Login 💰</h1>
+
+<div class="container">
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+
+    <button onclick="login()">Login ✅</button>
+
+    <p id="msg"></p>
+    <p>Don't have an account? <a href="register.html">Register here</a></p>
+</div>
+
+<script>
+function login() {
+    let user = document.getElementById("username").value.trim();
+    let pass = document.getElementById("password").value.trim();
+
+    let savedUser = localStorage.getItem("username");
+    let savedPass = localStorage.getItem("password");
+
+    if(user === "" || pass === "") {
+        document.getElementById("msg").innerHTML = "⚠ Fill all fields";
+        return;
+    }
+
+    if(user === savedUser && pass === savedPass) {
+        // Save login status
+        localStorage.setItem("isLoggedIn", "true");
+
+        // Redirect to main page
+        window.location.href = "index.html";
+    } else {
+        document.getElementById("msg").innerHTML = "❌ Invalid username or password";
+    }
+}
+</script>
+
+</body>
+</html>
